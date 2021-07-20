@@ -1,0 +1,43 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+@media screen and (min-width: 768px), screen and (orientation: landscape) {
+  :root {
+    font-size: calc(100vw / 375);
+  }
+}
+@media screen and (max-width: 768px), screen and (orientation: portrait) {
+  :root {
+    font-size: calc(100vh / 375);
+  }
+}
+body {
+  height: 100vh;
+  width: 100vw;
+  background-color: bisque;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+body div.pan {
+  height: 160rem;
+  width: 160rem;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-content: space-around;
+  background-color: azure;
+}
+body div.item {
+  flex: 0 0 40rem;
+  height: 40rem;
+  width: 40rem;
+  border: 2px solid #777;
+  font-size: 10rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+}
