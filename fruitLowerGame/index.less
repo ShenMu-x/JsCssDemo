@@ -1,0 +1,97 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+body {
+    height: 100vh;
+    width: 100vw;
+    // border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(241, 194, 133);
+
+    .msg {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        // height: 100px;
+        // margin: 20px 0;
+        // width: 800px;
+        .startBtn{
+            height: 40px;
+            width: 300px;
+            padding: 5px;
+            background-color: salmon;
+        }
+    }
+
+    .page {
+        flex: 5;
+        background-color: white;
+        width: 800px;
+        margin-bottom: 50px;
+        display: flex;
+
+        .score {
+            width: 200px;
+            border-right: 10px solid black;
+        }
+
+        .main {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+
+            .img{
+                height: 50px;
+                width: 50px;
+                position: absolute;
+                
+            }
+            
+            .lower{
+                animation: lower 5s linear 0s 1 normal forwards;
+            }
+
+            .shake{
+                animation: shake 0.3s ease-in-out 0s 1 normal forwards;
+            }
+
+            .stopLower{
+                animation-play-state: paused;
+            }
+
+            @keyframes lower {
+                100%{
+                    transform: translateY(600px);
+                }
+            }
+
+            @keyframes shake {
+                0%{
+                    transform: translate(0%,0%);
+                }
+                25%{
+                    transform: translate(50%,25%);
+                }
+
+                75%{
+                    transform: translate(-50%,75%);
+                }
+
+                100%{
+                    transform: translate(0,100%);
+                }
+            }
+
+        }
+    }
+}
