@@ -183,7 +183,7 @@ function right() {
     paint(flag);
 }
 
-// dfs 判断游戏是否结束
+// dfs 判断游戏是否结束 结束返回true,否则返回false
 function over() {
     let flag = true;
     function dfs(i, j) {
@@ -207,11 +207,20 @@ function over() {
 }
 
 // 新增格子
-function add(may) {
+function add() {
+
+    let may = [];
+
+    // 是否满格，满格则继续判断是否结束
+    game.forEach((v, row) => {
+        v.forEach((t, col) => {
+            if (t === 0) may.push([row, col]);
+        })
+    });
 
     let idx = Math.floor(Math.random() * may.length);
     idx = may[idx];
-    console.log(idx);
+    // console.log(idx);
 
     let id = `item${idx[0]}${idx[1]}`;
     let item = document.getElementById(id);
@@ -229,41 +238,35 @@ function add(may) {
         game[idx[0]][idx[1]] = 4;
     }
 
+    // 游戏结束的时机：新增格子后已经无法消除
+    if(over()){
+        alert('游戏结束！刷新重新进入');
+        window.removeEventListener('keyup', keyEvent);
+    }
 }
 
 // 绘制游戏区
 function paint(flag = true) {
     // flag = false  说明进行了无效操作
-    // 如果是无效操作，不会增加新的格子
-    let may = [];
+    // 如果是无效操作，不会增加新的格子,不会重新绘制
 
-    // 是否满格，满格则继续判断是否结束
-    game.forEach((v, row) => {
-        v.forEach((t, col) => {
-            if (t === 0) may.push([row, col]);
-        })
-    });
-
-    if (may.length == 0 && over()) {
-        alert("游戏结束");
-        return;
-    }
-
-    for (let row = 0; row < LEN; row++) {
-        for (let col = 0; col < LEN; col++) {
-            let item = document.querySelector(`#item${row}${col}`);
-            item.innerText = "";
-            item.style.backgroundColor = "transparent";
-            let num = game[row][col];
-            if (num != 0) {
-                item.innerText = num;
-                if (colorLs[num]) item.style.backgroundColor = colorLs[num];
-                else item.style.backgroundColor = colorLs["default"];
+    if (flag) {
+        for (let row = 0; row < LEN; row++) {
+            for (let col = 0; col < LEN; col++) {
+                let item = document.querySelector(`#item${row}${col}`);
+                item.innerText = "";
+                item.style.backgroundColor = "transparent";
+                let num = game[row][col];
+                if (num != 0) {
+                    item.innerText = num;
+                    if (colorLs[num]) item.style.backgroundColor = colorLs[num];
+                    else item.style.backgroundColor = colorLs["default"];
+                }
             }
         }
-    }
 
-    if (flag) add(may);
+        add();
+    }
 }
 
 window.onload = function () {
@@ -284,16 +287,16 @@ window.onload = function () {
     // document.getElementById("body").offsetTop;
     paint();
 
-    window.addEventListener('keyup', function (e) {
-        // console.log(e);
-        switch (e.key) {
-            case "ArrowUp": { up(); break; }
-            case "ArrowDown": { down(); break; }
-            case "ArrowLeft": { left(); break; }
-            case "ArrowRight": { right(); break; }
-            default: break;
-        }
-    })
+    window.addEventListener('keyup', keyEvent);
 }
 
-
+function keyEvent(e) {
+    // console.log(e);
+    switch (e.key) {
+        case "ArrowUp": { up(); break; }
+        case "ArrowDown": { down(); break; }
+        case "ArrowLeft": { left(); break; }
+        case "ArrowRight": { right(); break; }
+        default: break;
+    }
+}
