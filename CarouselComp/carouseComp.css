@@ -1,0 +1,103 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  padding: 10px;
+}
+body h1 {
+  margin: 0 auto;
+}
+body .carouse-container {
+  width: 600px;
+  height: 300px;
+  overflow: hidden;
+  border: 1px solid #999;
+  position: relative;
+}
+body .carouse-container .carouse-wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+body .carouse-container .carouse-slide {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+body .carouse-container .carouse-slide img {
+  height: 100%;
+  width: 100%;
+}
+body .carouse-container .opacity0 {
+  opacity: 0;
+}
+body .carouse-container .transition {
+  transition: 1s;
+}
+body .carouse-container .none {
+  display: none;
+}
+body .carouse-container .carouse-pagination {
+  position: absolute;
+  width: fit-content;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+body .carouse-container .carouse-pagination .page-item {
+  display: inline-block;
+  height: 10px;
+  width: 10px;
+  margin: 0 10px;
+  clip-path: circle();
+  background-color: #999;
+}
+body .carouse-container .carouse-pagination .page-item-active {
+  background-color: seagreen;
+}
+body .carouse-container .carouse-btn-next,
+body .carouse-container .carouse-btn-prev {
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  top: 40%;
+  background-color: #bbb;
+  opacity: 0.5;
+  clip-path: circle();
+  font-size: 25px;
+  line-height: 50px;
+  text-align: center;
+  color: #555;
+}
+body .carouse-container .carouse-btn-next {
+  right: 10px;
+}
+body .carouse-container .carouse-btn-next::after {
+  content: "";
+  display: block;
+  border: 10px solid transparent;
+  border-left: 15px solid #555;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-5px, -50%);
+}
+body .carouse-container .carouse-btn-prev {
+  left: 10px;
+}
+body .carouse-container .carouse-btn-prev::after {
+  content: "";
+  display: block;
+  border: 10px solid transparent;
+  border-right: 15px solid #555;
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  transform: translate(5px, -50%);
+}
