@@ -48,6 +48,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.15.4",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/vue-fontawesome": "^2.0.2",
+    "axios": "^0.21.1",
     "element-ui": "^2.15.5",
     "i": "^0.3.6",
     "npm": "^7.20.6",
