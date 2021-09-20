@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div.load,
+        div.upload {
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+        }
+
+
+        div.load div.progress,
+        div.upload div.progress {
+            height: 10px;
+            width: 300px;
+            background-color: silver;
+            margin-right: 20px;
+        }
+
+        div.progress>span {
+            display: block;
+            height: 100%;
+            background-image: linear-gradient(to right, #5dc7ac63, #2c2097);
+            width: 0;
+            transition-duration: 0.18s;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>下载进度条</h1>
+    <button class="loadbtn">点击下载</button>
+    <div class="load">
+        <div class="progress">
+            <span></span>
+        </div>
+        <span class="count">0%</span>
+    </div>
+
+    <div class="loadresult">
+        本处显示请求结果
+    </div>
+
+    <h1>上传进度条</h1>
+    <input type="file" name="test" id="inp" type="image">
+    <button class="uploadbtn">点击上传</button>
+    <div class="upload">
+        <div class="progress">
+            <span></span>
+        </div>
+        <span class="count">0%</span>
+    </div>
+
+    <div class="uploadresult">
+        本处显示上传结果
+    </div>
+    <script>
+        function ajax(url, method = 'GET', data = null) {
+            return new Promise((res, rej) => {
+                let tag = 0;
+                let xhr = new XMLHttpRequest();
+
+                xhr.onload = function () {
+                    if ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304) {
+                        res(xhr.responseText);
+                    } else {
+                        rej(`err with ` + xhr.status);
+                    }
+                }
+
+                let type = data ? 'upload' : 'load';
+
+                if (type === 'load') {
+                    xhr.onprogress = function (event) {
+                        if (Date.now() - tag > 200) {
+                            tag = Date.now();
+                            let pgs = document.querySelector('div.loadresult');
+                            pgs.innerText = `Recieved ${event.loaded} of ${event.total} bytes.`;
+                            let span = document.querySelector('.load .progress>span');
+                            span.style.width = ((event.loaded / event.total).toFixed(2) * 100) + '%';
+                            console.log(span.style.width);
+                            document.querySelector('.load .count').innerText = span.style.width;
+                        }
+                    }
+                } else {
+                    xhr.upload.onprogress = function (event) {
+                        if (Date.now() - tag > 200) {
+                            tag = Date.now();
+                            let pgs = document.querySelector('div.uploadresult');
+                            pgs.innerText = `Upload ${event.loaded} of ${event.total} bytes.`;
+                            let span = document.querySelector('.upload .progress>span');
+                            span.style.width = ((event.loaded / event.total).toFixed(2) * 100) + '%';
+                            console.log(span.style.width);
+                            document.querySelector('.upload .count').innerText = span.style.width;
+                        }
+                    }
+                }
+
+                xhr.open(method, url);
+                xhr.send(data);
+            })
+        }
+        let btn = document.querySelector('button.loadbtn');
+        btn.addEventListener('click', function (e) {
+            ajax('./load').then(data => {
+                console.log('success');
+                document.querySelector('.load .progress>span').style.width = '100%'
+                document.querySelector('.load .count').innerText = '100%';
+                document.querySelector('div.loadresult').innerText = '下载成功';
+            }).catch(err => {
+                console.log(err);
+                document.querySelector('div.loadresult').innerText = err;
+            })
+        })
+
+        btn = document.querySelector('button.uploadbtn');
+        btn.addEventListener('click', function (e) {
+            let inp = document.querySelector('#inp');
+            if (!inp.files[0]) {
+                alert('no image');
+                return;
+            }
+            var formData = new FormData()
+            formData.append("test", inp.files[0]);
+            ajax('./upload', 'POST', formData).then(data => {
+                console.log('success');
+                document.querySelector('.upload .progress>span').style.width = '100%'
+                document.querySelector('.upload .count').innerText = '100%';
+                document.querySelector('div.uploadresult').innerText = '上传成功';
+            }).catch(err => {
+                console.log(err);
+                document.querySelector('div.uploadresult').innerText = err;
+            })
+        })
+
+    </script>
+</body>
+
+</html>
